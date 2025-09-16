@@ -82,6 +82,17 @@
             overflow: hidden;
         }
         
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+        }
+        
         .header h1 {
             color: white;
             font-size: 32px;
@@ -110,7 +121,7 @@
             left: 20px;
             background: rgba(255, 255, 255, 0.2);
             border: none;
-            border-radius: 50%; /* همیشه دایره‌ای */
+            border-radius: 50%;
             width: 40px;
             height: 40px;
             display: flex;
@@ -142,11 +153,6 @@
             color: var(--primary);
             font-weight: 500;
             font-size: 16px;
-            transition: color 0.3s;
-        }
-        
-        .dark-mode .input-group label {
-            color: var(--success); /* سبز در حالت شب */
         }
         
         input, textarea {
@@ -172,10 +178,6 @@
             resize: vertical;
         }
         
-        input::placeholder, textarea::placeholder {
-            text-align: right; /* hint فارسی راست‌چین */
-        }
-        
         button {
             background: linear-gradient(to right, var(--primary), var(--primary-dark));
             color: white;
@@ -193,6 +195,30 @@
             overflow: hidden;
         }
         
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
         .copy-btn {
             background: linear-gradient(to right, var(--success), #059669);
             margin-top: 20px;
@@ -207,15 +233,11 @@
             min-height: 120px;
             max-height: 350px;
             overflow-y: auto;
+            white-space: pre-wrap;
             color: var(--text-primary);
             unicode-bidi: plaintext;
             text-align: start;
             font-family: monospace;
-        }
-        
-        .result-box pre {
-            white-space: pre-wrap; /* چندخطی */
-            word-wrap: break-word;
         }
         
         .result-placeholder {
@@ -223,10 +245,133 @@
             text-align: center;
             padding: 30px;
             opacity: 0.7;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: var(--success);
+            color: white;
+            padding: 18px 28px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px var(--shadow-color);
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: all 0.4s;
+            z-index: 1000;
             display: flex;
             align-items: center;
-            justify-content: center;
-            height: 100%;
+            gap: 10px;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .icon {
+            margin-left: 10px;
+            filter: var(--icon-filter);
+        }
+        
+        /* استایل جدید برای placeholderهای فارسی */
+        ::placeholder {
+            text-align: right;
+            unicode-bidi: plaintext;
+        }
+        
+        :-ms-input-placeholder {
+            text-align: right;
+            unicode-bidi: plaintext;
+        }
+        
+        ::-ms-input-placeholder {
+            text-align: right;
+            unicode-bidi: plaintext;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0;
+            }
+            
+            .header {
+                padding: 25px 20px;
+            }
+            
+            .header h1 {
+                font-size: 26px;
+            }
+            
+            .content {
+                padding: 25px 20px;
+            }
+            
+            input, textarea, button {
+                padding: 14px;
+            }
+            
+            .notification {
+                right: 20px;
+                left: 20px;
+                top: 20px;
+            }
+        }
+        
+        /* اسکرول بار استایل */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        .pulse {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--success);
+            margin-left: 8px;
+            box-shadow: 0 0 0 rgba(16, 185, 129, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+        
+        /* استایل برای متن انگلیسی */
+        .ltr-text {
+            direction: ltr;
+            text-align: left;
+            unicode-bidi: plaintext;
+        }
+        
+        /* تشخیص خودکار راست‌چین و چپ‌چین */
+        [dir="auto"] {
+            unicode-bidi: plaintext;
+            text-align: start;
         }
     </style>
 </head>
@@ -282,18 +427,23 @@
             const themeToggle = document.getElementById('themeToggle');
             const body = document.body;
             
+            // بررسی وضعیت حالت شب از localStorage
             if (localStorage.getItem('darkMode') === 'enabled') {
                 body.classList.add('dark-mode');
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
             }
             
-            const configPattern = /(vless|vmess|trojan|ss|hysteria2|wireguard|socks):\\/\\/[^\\s<>]+/gi;
+            // الگوی regex برای تشخیص پروتکل‌های مورد نظر
+            const configPattern = /(vless|vmess|trojan|ss|hysteria2|wireguard|socks):\/\/[^\s<>]+/gi;
             
+            // تابع تشخیص زبان متن
             function detectTextDirection(text) {
-                const rtlPattern = /[\\u0600-\\u06FF\\u0750-\\u077F\\u08A0-\\u08FF\\uFB50-\\uFDFF\\uFE70-\\uFEFF]/;
+                // الگوهای کاراکترهای فارسی و عربی
+                const rtlPattern = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
                 return rtlPattern.test(text) ? 'rtl' : 'ltr';
             }
             
+            // اعمال جهت مناسب بر اساس محتوا
             function applyTextDirection() {
                 const inputs = document.querySelectorAll('input, textarea');
                 inputs.forEach(input => {
@@ -315,6 +465,7 @@
                 }
             }
             
+            // رویداد تغییر حالت روز/شب
             themeToggle.addEventListener('click', function() {
                 body.classList.toggle('dark-mode');
                 
@@ -327,6 +478,7 @@
                 }
             });
             
+            // رویداد پردازش متن
             processBtn.addEventListener('click', function() {
                 const name = configName.value.trim();
                 const text = inputText.value;
@@ -348,26 +500,31 @@
                 matches.forEach(match => {
                     let cleanedConfig = match.trim();
                     
+                    // اگر کاربر نامی وارد کرده، به کانفیگ اضافه کنیم
                     if (name) {
+                        // پیدا کردن جای مناسب برای افزودن نام (معمولا در query string یا انتهای URL)
                         if (cleanedConfig.includes('#')) {
+                            // اگر از قبل fragment دارد، آن را با نام جدید جایگزین کنیم
                             cleanedConfig = cleanedConfig.split('#')[0] + '#' + encodeURIComponent(name);
                         } else {
+                            // اگر fragment ندارد، یک fragment با نام جدید اضافه کنیم
                             cleanedConfig += '#' + encodeURIComponent(name);
                         }
                     }
                     
-                    result += cleanedConfig + '\\n\\n';
+                    result += cleanedConfig + '\n\n';
                 });
                 
                 resultContainer.innerHTML = `<pre>${result}</pre>`;
                 applyTextDirection();
             });
             
+            // رویداد کپی کردن
             copyBtn.addEventListener('click', function() {
                 const resultText = resultContainer.querySelector('pre')?.innerText;
                 
                 if (!resultText) {
-                    showNotification('متنی برای کپی کردن وجود ندارد', false);
+                    showNotification('متن‌ای برای کپی کردن وجود ندارد', false);
                     return;
                 }
                 
@@ -379,9 +536,11 @@
                 });
             });
             
+            // اعمال جهت متن هنگام تایپ
             inputText.addEventListener('input', applyTextDirection);
             configName.addEventListener('input', applyTextDirection);
             
+            // تابع نمایش اعلان
             function showNotification(message, isSuccess) {
                 notification.innerHTML = `
                     <i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
