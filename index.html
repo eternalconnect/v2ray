@@ -19,6 +19,29 @@
             --success: #10b981;
             --gradient-start: #3b82f6;
             --gradient-end: #1d4ed8;
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --container-bg: rgba(255, 255, 255, 0.95);
+            --input-bg: #ffffff;
+            --result-bg: #f1f5f9;
+            --icon-filter: none;
+        }
+        
+        .dark-mode {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --container-bg: rgba(30, 41, 59, 0.9);
+            --input-bg: rgba(15, 23, 42, 0.6);
+            --result-bg: rgba(15, 23, 42, 0.6);
+            --icon-filter: invert(1);
         }
         
         * {
@@ -26,28 +49,29 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Vazirmatn', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
         
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: var(--bg-primary);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            color: var(--light);
+            color: var(--text-primary);
         }
         
         .container {
-            background: rgba(30, 41, 59, 0.8);
+            background: var(--container-bg);
             backdrop-filter: blur(12px);
             border-radius: 24px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 35px var(--shadow-color);
             width: 100%;
             max-width: 700px;
             overflow: hidden;
             padding: 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
         }
         
         .header {
@@ -91,6 +115,30 @@
             position: relative;
         }
         
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(30deg);
+        }
+        
         .content {
             padding: 30px;
         }
@@ -102,7 +150,7 @@
         .input-group label {
             display: block;
             margin-bottom: 10px;
-            color: var(--primary-light);
+            color: var(--primary);
             font-weight: 500;
             font-size: 16px;
         }
@@ -110,12 +158,13 @@
         input, textarea {
             width: 100%;
             padding: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--border-color);
             border-radius: 14px;
             font-size: 16px;
             transition: all 0.3s;
-            background-color: rgba(15, 23, 42, 0.6);
-            color: white;
+            background-color: var(--input-bg);
+            color: var(--text-primary);
+            unicode-bidi: plaintext;
         }
         
         input:focus, textarea:focus {
@@ -177,19 +226,22 @@
         
         .result-box {
             margin-top: 30px;
-            background-color: rgba(15, 23, 42, 0.6);
+            background-color: var(--result-bg);
             padding: 20px;
             border-radius: 14px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--border-color);
             min-height: 120px;
             max-height: 350px;
             overflow-y: auto;
             white-space: pre-wrap;
-            color: white;
+            color: var(--text-primary);
+            unicode-bidi: plaintext;
+            text-align: start;
+            font-family: monospace;
         }
         
         .result-placeholder {
-            color: var(--secondary);
+            color: var(--text-secondary);
             text-align: center;
             padding: 30px;
             opacity: 0.7;
@@ -203,7 +255,7 @@
             color: white;
             padding: 18px 28px;
             border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px var(--shadow-color);
             transform: translateY(-100px);
             opacity: 0;
             transition: all 0.4s;
@@ -220,6 +272,7 @@
         
         .icon {
             margin-left: 10px;
+            filter: var(--icon-filter);
         }
         
         @media (max-width: 768px) {
@@ -256,7 +309,7 @@
         }
         
         ::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.4);
+            background: var(--bg-secondary);
             border-radius: 10px;
         }
         
@@ -291,11 +344,27 @@
                 box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
             }
         }
+        
+        /* استایل برای متن انگلیسی */
+        .ltr-text {
+            direction: ltr;
+            text-align: left;
+            unicode-bidi: plaintext;
+        }
+        
+        /* تشخیص خودکار راست‌چین و چپ‌چین */
+        [dir="auto"] {
+            unicode-bidi: plaintext;
+            text-align: start;
+        }
     </style>
 </head>
-<body>
+<body class="light-mode">
     <div class="container">
         <div class="header">
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
             <h1>مبدل کانفیگ V2ray</h1>
             <p>نام و کانفیگ‌های خود را وارد کنید تا پردازش شوند</p>
             <div class="creator">ساخته شده توسط Eternal Connect</div>
@@ -304,12 +373,12 @@
         <div class="content">
             <div class="input-group">
                 <label for="configName">نام کانفیگ <i class="fas fa-tag icon"></i></label>
-                <input type="text" id="configName" placeholder="یک نام برای کانفیگ خود وارد کنید">
+                <input type="text" id="configName" placeholder="یک نام برای کانفیگ خود وارد کنید" dir="auto">
             </div>
             
             <div class="input-group">
                 <label for="inputText">متن حاوی کانفیگ‌ها <i class="fas fa-code icon"></i></label>
-                <textarea id="inputText" placeholder="متن حاوی لینک‌های کانفیگ را اینجا وارد کنید..."></textarea>
+                <textarea id="inputText" placeholder="متن حاوی لینک‌های کانفیگ را اینجا وارد کنید..." dir="auto"></textarea>
             </div>
             
             <button id="processBtn">
@@ -339,10 +408,61 @@
             const configName = document.getElementById('configName');
             const resultContainer = document.getElementById('resultContainer');
             const notification = document.getElementById('notification');
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            
+            // بررسی وضعیت حالت شب از localStorage
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                body.classList.add('dark-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
             
             // الگوی regex برای تشخیص پروتکل‌های مورد نظر
             const configPattern = /(vless|vmess|trojan|ss|hysteria2|wireguard|socks):\/\/[^\s<>]+/gi;
             
+            // تابع تشخیص زبان متن
+            function detectTextDirection(text) {
+                // الگوهای کاراکترهای فارسی و عربی
+                const rtlPattern = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+                return rtlPattern.test(text) ? 'rtl' : 'ltr';
+            }
+            
+            // اعمال جهت مناسب بر اساس محتوا
+            function applyTextDirection() {
+                const inputs = document.querySelectorAll('input, textarea');
+                inputs.forEach(input => {
+                    if (input.value) {
+                        const direction = detectTextDirection(input.value);
+                        input.style.direction = direction;
+                        input.style.textAlign = direction === 'rtl' ? 'right' : 'left';
+                    } else {
+                        input.style.direction = 'auto';
+                        input.style.textAlign = 'start';
+                    }
+                });
+                
+                const resultPre = resultContainer.querySelector('pre');
+                if (resultPre) {
+                    const direction = detectTextDirection(resultPre.textContent);
+                    resultPre.style.direction = direction;
+                    resultPre.style.textAlign = direction === 'rtl' ? 'right' : 'left';
+                }
+            }
+            
+            // رویداد تغییر حالت روز/شب
+            themeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-mode');
+                
+                if (body.classList.contains('dark-mode')) {
+                    localStorage.setItem('darkMode', 'enabled');
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                } else {
+                    localStorage.setItem('darkMode', 'disabled');
+                    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                }
+            });
+            
+            // رویداد پردازش متن
             processBtn.addEventListener('click', function() {
                 const name = configName.value.trim();
                 const text = inputText.value;
@@ -380,8 +500,10 @@
                 });
                 
                 resultContainer.innerHTML = `<pre>${result}</pre>`;
+                applyTextDirection();
             });
             
+            // رویداد کپی کردن
             copyBtn.addEventListener('click', function() {
                 const resultText = resultContainer.querySelector('pre')?.innerText;
                 
@@ -398,6 +520,11 @@
                 });
             });
             
+            // اعمال جهت متن هنگام تایپ
+            inputText.addEventListener('input', applyTextDirection);
+            configName.addEventListener('input', applyTextDirection);
+            
+            // تابع نمایش اعلان
             function showNotification(message, isSuccess) {
                 notification.innerHTML = `
                     <i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
