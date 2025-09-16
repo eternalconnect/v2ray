@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مبدل کانفیگ V2ray</title>
+    <title>مبدل V2ray</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap');
@@ -164,7 +164,14 @@
             transition: all 0.3s;
             background-color: var(--input-bg);
             color: var(--text-primary);
-            unicode-bidi: plaintext;
+        }
+        
+        input::placeholder,
+        textarea::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.7;
+            text-align: right;
+            direction: rtl;
         }
         
         input:focus, textarea:focus {
@@ -233,10 +240,11 @@
             min-height: 120px;
             max-height: 350px;
             overflow-y: auto;
-            white-space: pre-wrap;
+            overflow-x: auto;
+            white-space: pre;
             color: var(--text-primary);
-            unicode-bidi: plaintext;
-            text-align: start;
+            direction: ltr;
+            text-align: left;
             font-family: monospace;
         }
         
@@ -245,6 +253,7 @@
             text-align: center;
             padding: 30px;
             opacity: 0.7;
+            direction: rtl;
         }
         
         .notification {
@@ -301,11 +310,20 @@
                 left: 20px;
                 top: 20px;
             }
+            
+            .theme-toggle {
+                top: 15px;
+                left: 15px;
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
         }
         
         /* اسکرول بار استایل */
         ::-webkit-scrollbar {
             width: 8px;
+            height: 8px;
         }
         
         ::-webkit-scrollbar-track {
@@ -344,19 +362,6 @@
                 box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
             }
         }
-        
-        /* استایل برای متن انگلیسی */
-        .ltr-text {
-            direction: ltr;
-            text-align: left;
-            unicode-bidi: plaintext;
-        }
-        
-        /* تشخیص خودکار راست‌چین و چپ‌چین */
-        [dir="auto"] {
-            unicode-bidi: plaintext;
-            text-align: start;
-        }
     </style>
 </head>
 <body class="light-mode">
@@ -365,7 +370,7 @@
             <button class="theme-toggle" id="themeToggle">
                 <i class="fas fa-moon"></i>
             </button>
-            <h1>مبدل کانفیگ V2ray</h1>
+            <h1>مبدل V2ray</h1>
             <p>نام و کانفیگ‌های خود را وارد کنید تا پردازش شوند</p>
             <div class="creator">ساخته شده توسط Eternal Connect</div>
         </div>
@@ -373,12 +378,12 @@
         <div class="content">
             <div class="input-group">
                 <label for="configName">نام کانفیگ <i class="fas fa-tag icon"></i></label>
-                <input type="text" id="configName" placeholder="یک نام برای کانفیگ خود وارد کنید" dir="auto">
+                <input type="text" id="configName" placeholder="یک نام برای کانفیگ خود وارد کنید">
             </div>
             
             <div class="input-group">
                 <label for="inputText">متن حاوی کانفیگ‌ها <i class="fas fa-code icon"></i></label>
-                <textarea id="inputText" placeholder="متن حاوی لینک‌های کانفیگ را اینجا وارد کنید..." dir="auto"></textarea>
+                <textarea id="inputText" placeholder="متن حاوی لینک‌های کانفیگ را اینجا وارد کنید..."></textarea>
             </div>
             
             <button id="processBtn">
@@ -419,35 +424,6 @@
             
             // الگوی regex برای تشخیص پروتکل‌های مورد نظر
             const configPattern = /(vless|vmess|trojan|ss|hysteria2|wireguard|socks):\/\/[^\s<>]+/gi;
-            
-            // تابع تشخیص زبان متن
-            function detectTextDirection(text) {
-                // الگوهای کاراکترهای فارسی و عربی
-                const rtlPattern = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
-                return rtlPattern.test(text) ? 'rtl' : 'ltr';
-            }
-            
-            // اعمال جهت مناسب بر اساس محتوا
-            function applyTextDirection() {
-                const inputs = document.querySelectorAll('input, textarea');
-                inputs.forEach(input => {
-                    if (input.value) {
-                        const direction = detectTextDirection(input.value);
-                        input.style.direction = direction;
-                        input.style.textAlign = direction === 'rtl' ? 'right' : 'left';
-                    } else {
-                        input.style.direction = 'auto';
-                        input.style.textAlign = 'start';
-                    }
-                });
-                
-                const resultPre = resultContainer.querySelector('pre');
-                if (resultPre) {
-                    const direction = detectTextDirection(resultPre.textContent);
-                    resultPre.style.direction = direction;
-                    resultPre.style.textAlign = direction === 'rtl' ? 'right' : 'left';
-                }
-            }
             
             // رویداد تغییر حالت روز/شب
             themeToggle.addEventListener('click', function() {
@@ -500,7 +476,6 @@
                 });
                 
                 resultContainer.innerHTML = `<pre>${result}</pre>`;
-                applyTextDirection();
             });
             
             // رویداد کپی کردن
@@ -519,10 +494,6 @@
                     console.error('Error copying text: ', err);
                 });
             });
-            
-            // اعمال جهت متن هنگام تایپ
-            inputText.addEventListener('input', applyTextDirection);
-            configName.addEventListener('input', applyTextDirection);
             
             // تابع نمایش اعلان
             function showNotification(message, isSuccess) {
