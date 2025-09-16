@@ -29,6 +29,7 @@
             --input-bg: #ffffff;
             --result-bg: #f1f5f9;
             --icon-filter: none;
+            --placeholder-color: #64748b;
         }
         
         .dark-mode {
@@ -42,6 +43,7 @@
             --input-bg: rgba(15, 23, 42, 0.6);
             --result-bg: rgba(15, 23, 42, 0.6);
             --icon-filter: invert(1);
+            --placeholder-color: #cbd5e1; /* بازگشت به رنگ اصلی برای placeholder */
         }
         
         * {
@@ -176,6 +178,9 @@
         textarea {
             min-height: 150px;
             resize: vertical;
+            white-space: pre;
+            overflow-wrap: normal;
+            overflow-x: auto;
         }
         
         button {
@@ -275,20 +280,33 @@
             filter: var(--icon-filter);
         }
         
-        /* استایل جدید برای placeholderهای فارسی */
+        /* استایل جدید برای placeholderها */
         ::placeholder {
             text-align: right;
             unicode-bidi: plaintext;
+            color: var(--placeholder-color);
         }
         
         :-ms-input-placeholder {
             text-align: right;
             unicode-bidi: plaintext;
+            color: var(--placeholder-color);
         }
         
         ::-ms-input-placeholder {
             text-align: right;
             unicode-bidi: plaintext;
+            color: var(--placeholder-color);
+        }
+        
+        /* تغییر رنگ labelها و آیکون‌ها در حالت شب */
+        .dark-mode .input-group label {
+            color: #10b981; /* رنگ سبز برای labelها در حالت شب */
+        }
+        
+        .dark-mode .icon {
+            color: #10b981; /* رنگ سبز برای آیکون‌ها در حالت شب */
+            filter: none;
         }
         
         @media (max-width: 768px) {
@@ -373,6 +391,15 @@
             unicode-bidi: plaintext;
             text-align: start;
         }
+        
+        /* استایل برای نمایش کانفیگ‌ها به صورت کامل */
+        pre {
+            white-space: pre-wrap;
+            word-break: break-all;
+            font-family: monospace;
+            line-height: 1.5;
+            unicode-bidi: plaintext;
+        }
     </style>
 </head>
 <body class="light-mode">
@@ -382,7 +409,7 @@
                 <i class="fas fa-moon"></i>
             </button>
             <h1>مبدل V2ray</h1>
-            <p>نام و کانفیگ‌های خود را وارد کنید تا پردازش شوند</p>
+            <p>نام و کانфиگ‌های خود را وارد کنید تا پردازش شوند</p>
             <div class="creator">ساخته شده توسط Eternal Connect</div>
         </div>
         
