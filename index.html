@@ -3,87 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3تبدیل کننده کانفیگ</title>
+    <title>تبدیل کانفیگ شبکه</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap');
+        
         :root {
             --primary: #2563eb;
-            --primary-light: #3b82f6;
+            --primary-dark: #1e40af;
             --secondary: #64748b;
             --light: #f8fafc;
             --dark: #1e293b;
+            --gray: #e2e8f0;
             --success: #10b981;
-            --border-radius: 12px;
-            --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
         
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #f0f4ff 0%, #e6eefa 100%);
-            color: var(--dark);
-            line-height: 1.6;
-            padding: 20px;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--dark);
         }
         
         .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 800px;
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
+            max-width: 600px;
             overflow: hidden;
-            margin: 20px auto;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
         
-        header {
-            background: linear-gradient(to right, var(--primary), var(--primary-light));
-            color: white;
-            padding: 25px;
+        .header {
             text-align: center;
+            margin-bottom: 30px;
         }
         
-        h1 {
-            font-size: 1.8rem;
+        .header h1 {
+            color: var(--primary);
+            font-size: 28px;
             margin-bottom: 10px;
+            font-weight: 700;
         }
         
-        .description {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-        
-        .form-group {
-            padding: 20px;
+        .header p {
+            color: var(--secondary);
+            font-size: 16px;
         }
         
         .input-group {
             margin-bottom: 20px;
         }
         
-        label {
+        .input-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--secondary);
+            color: var(--dark);
+            font-weight: 500;
         }
         
         input, textarea {
             width: 100%;
             padding: 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: var(--border-radius);
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            border: 2px solid var(--gray);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background-color: var(--light);
         }
         
         input:focus, textarea:focus {
@@ -93,203 +91,199 @@
         }
         
         textarea {
-            min-height: 150px;
+            min-height: 120px;
             resize: vertical;
         }
         
         button {
-            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
             color: white;
             border: none;
             padding: 15px 25px;
-            border-radius: var(--border-radius);
-            font-size: 1rem;
-            font-weight: 600;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
         }
         
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
         }
         
         button:active {
             transform: translateY(0);
         }
         
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
         .copy-btn {
-            background: linear-gradient(to right, var(--success), #34d399);
-        }
-        
-        .result-container {
-            padding: 20px;
-            border-top: 1px solid #e2e8f0;
+            background: linear-gradient(to right, var(--success), #059669);
+            margin-top: 15px;
         }
         
         .result-box {
-            background: var(--light);
-            border-radius: var(--border-radius);
+            margin-top: 25px;
+            background-color: var(--light);
             padding: 20px;
-            min-height: 150px;
-            margin-bottom: 20px;
-            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            border: 2px solid var(--gray);
+            min-height: 100px;
+            max-height: 300px;
+            overflow-y: auto;
             white-space: pre-wrap;
-            overflow-wrap: break-word;
         }
         
-        footer {
+        .result-placeholder {
+            color: var(--secondary);
             text-align: center;
             padding: 20px;
-            color: var(--secondary);
-            font-size: 0.9rem;
-            margin-top: auto;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
         }
         
         @media (max-width: 768px) {
             .container {
-                margin: 10px;
-                width: calc(100% - 20px);
+                padding: 20px;
             }
             
-            .button-group {
-                flex-direction: column;
+            .header h1 {
+                font-size: 24px;
             }
             
-            button {
-                width: 100%;
+            input, textarea, button {
+                padding: 12px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>تبدیل کننده کانفیگ</h1>
-            <p class="description">کانفیگ‌های خود را وارد کنید و آن‌ها را به فرمت جدید تبدیل نمایید</p>
-        </header>
-        
-        <div class="form-group">
-            <div class="input-group">
-                <label for="configName">نام کانفیگ</label>
-                <input type="text" id="configName" placeholder="یک نام برای کانفیگ خود وارد کنید">
-            </div>
-            
-            <div class="input-group">
-                <label for="inputConfig">کانفیگ‌های ورودی</label>
-                <textarea id="inputConfig" placeholder="کانفیگ‌های خود را اینجا وارد کنید..."></textarea>
-            </div>
-            
-            <button id="convertBtn">
-                اعمال تغییرات
-            </button>
+        <div class="header">
+            <h1>تبدیل کانفیگ شبکه</h1>
+            <p>نام و کانفیگ‌های خود را وارد کنید تا پردازش شوند</p>
         </div>
         
-        <div class="result-container">
-            <label>نتیجه تبدیل</label>
-            <div class="result-box" id="resultText">هیچ کانفیگی در متن یافت نشد.</div>
-            
-            <div class="button-group">
-                <button id="copyBtn" class="copy-btn">کپی نتیجه</button>
-            </div>
+        <div class="input-group">
+            <label for="configName">نام کانفیگ</label>
+            <input type="text" id="configName" placeholder="یک نام برای کانفیگ خود وارد کنید">
         </div>
+        
+        <div class="input-group">
+            <label for="inputText">متن حاوی کانفیگ‌ها</label>
+            <textarea id="inputText" placeholder="متن حاوی لینک‌های کانفیگ را اینجا وارد کنید..."></textarea>
+        </div>
+        
+        <button id="processBtn">اعمال تغییرات</button>
+        
+        <div class="result-box" id="resultContainer">
+            <div class="result-placeholder">نتیجه اینجا نمایش داده خواهد شد</div>
+        </div>
+        
+        <button id="copyBtn" class="copy-btn">کپی نتیجه</button>
     </div>
     
-    <footer>
-        <p>Eternal Connect - طراحی شده با ❤️</p>
-    </footer>
+    <div class="notification" id="notification">متن با موفقیت کپی شد!</div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const convertBtn = document.getElementById('convertBtn');
+            const processBtn = document.getElementById('processBtn');
             const copyBtn = document.getElementById('copyBtn');
-            const inputConfig = document.getElementById('inputConfig');
+            const inputText = document.getElementById('inputText');
             const configName = document.getElementById('configName');
-            const resultText = document.getElementById('resultText');
+            const resultContainer = document.getElementById('resultContainer');
+            const notification = document.getElementById('notification');
             
-            convertBtn.addEventListener('click', function() {
-                const inputText = inputConfig.value;
-                const customName = configName.value.trim();
-                const tag = "T.ME%2FEternal_Connect%20%7C%20%F0%9F%8C%8D";
+            // الگوی regex برای تشخیص پروتکل‌های مورد نظر
+            const configPattern = /(vless|vmess|trojan|ss|hysteria2|wireguard|socks):\/\/[^\s<>]+/gi;
+            
+            processBtn.addEventListener('click', function() {
+                const name = configName.value.trim();
+                const text = inputText.value;
                 
-                // الگوی regex برای تشخیص فقط پروتکل‌های مورد نظر  
-                const configPattern = /(vless|vmess|trojan|ss|hysteria2|wireguard|socks):\/\/[^\s<>]+/gi;
+                if (!text) {
+                    resultContainer.innerHTML = '<div class="result-placeholder">لطفا متن حاوی کانفیگ‌ها را وارد کنید</div>';
+                    return;
+                }
                 
-                let matches = inputText.match(configPattern);
-                let results = [];
+                const matches = text.match(configPattern);
                 
-                if (matches) {
-                    matches.forEach(config => {
-                        config = config.trim();
-                        if (config.length === 0) return;
-                        
-                        // جایگزینی دقیق بخش path با متن جدید
-                        config = config.replace(/path=([^&]*)/gi, "path=/telegram: @Eternal_Connect - telegram: @Eternal_Connect - telegram: @Eternal_Connect - telegram: @Eternal_Connect");
-                        
-                        // اضافه کردن نام کانفیگ اگر کاربر وارد کرده باشد
-                        if (customName) {
-                            if (config.includes("#")) {
-                                config = config.substring(0, config.indexOf("#")) + "#" + customName;
-                            } else {
-                                config += "#" + customName;
-                            }
+                if (!matches || matches.length === 0) {
+                    resultContainer.innerHTML = '<div class="result-placeholder">هیچ کانفیگی در متن یافت نشد.</div>';
+                    return;
+                }
+                
+                let result = '';
+                
+                matches.forEach(match => {
+                    let cleanedConfig = match.trim();
+                    
+                    // اگر کاربر نامی وارد کرده، به کانفیگ اضافه کنیم
+                    if (name) {
+                        // پیدا کردن جای مناسب برای افزودن نام (معمولا در query string یا انتهای URL)
+                        if (cleanedConfig.includes('#')) {
+                            // اگر از قبل fragment دارد، آن را با نام جدید جایگزین کنیم
+                            cleanedConfig = cleanedConfig.split('#')[0] + '#' + encodeURIComponent(name);
                         } else {
-                            // اگر نام کانفیگ وارد نشده، از تگ پیش‌فرض استفاده کن
-                            if (config.includes("#")) {
-                                config = config.substring(0, config.indexOf("#")) + "#" + decodeURIComponent(tag);
-                            } else {
-                                config += "#" + decodeURIComponent(tag);
-                            }
+                            // اگر fragment ندارد، یک fragment با نام جدید اضافه کنیم
+                            cleanedConfig += '#' + encodeURIComponent(name);
                         }
-                        
-                        results.push(config);
-                    });
-                }
+                    }
+                    
+                    result += cleanedConfig + '\n\n';
+                });
                 
-                // اگر هیچ کانفیگی پیدا نشد، پیام مناسب نمایش دهید  
-                if (results.length === 0) {
-                    resultText.textContent = "هیچ کانفیگی در متن یافت نشد.";
-                } else {
-                    resultText.textContent = results.join("\n\n");
-                }
+                resultContainer.innerHTML = `<pre>${result}</pre>`;
             });
             
             copyBtn.addEventListener('click', function() {
-                const result = resultText.textContent;
+                const resultText = resultContainer.querySelector('pre')?.innerText;
                 
-                // ایجاد یک textarea موقت برای کپی کردن متن
-                const textarea = document.createElement('textarea');
-                textarea.value = result;
-                document.body.appendChild(textarea);
-                textarea.select();
-                
-                try {
-                    const successful = document.execCommand('copy');
-                    const msg = successful ? 'موفقیت‌آمیز' : 'ناموفق';
-                    console.log('کپی کردن متن ' + msg);
-                    
-                    // تغییر متن دکمه به صورت موقت
-                    if (successful) {
-                        copyBtn.textContent = "کپی شد!";
-                        setTimeout(() => {
-                            copyBtn.textContent = "کپی نتیجه";
-                        }, 2000);
-                    }
-                } catch (err) {
-                    console.error('خطا در کپی کردن: ', err);
+                if (!resultText) {
+                    showNotification('متن‌ای برای کپی کردن وجود ندارد', false);
+                    return;
                 }
                 
-                document.body.removeChild(textarea);
+                navigator.clipboard.writeText(resultText).then(() => {
+                    showNotification('متن با موفقیت کپی شد!', true);
+                }).catch(err => {
+                    showNotification('خطا در کپی کردن متن', false);
+                    console.error('Error copying text: ', err);
+                });
             });
+            
+            function showNotification(message, isSuccess) {
+                notification.textContent = message;
+                notification.style.background = isSuccess 
+                    ? 'linear-gradient(to right, #10b981, #059669)' 
+                    : 'linear-gradient(to right, #ef4444, #dc2626)';
+                
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
         });
     </script>
 </body>
