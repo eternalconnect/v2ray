@@ -222,28 +222,37 @@
                 const tag = "T.ME%2FEternal_Connect%20%7C%20%F0%9F%8C%8D";
                 
                 // الگوی regex برای تشخیص فقط پروتکل‌های مورد نظر  
-                const configPattern = /(?i)(vless|vmess|trojan|ss|hysteria2|wireguard|socks):\/\/[^\s]+/g;
+                const configPattern = /(vless|vmess|trojan|ss|hysteria2|wireguard|socks):\/\/[^\s<>]+/gi;
                 
-                let match;
-                const results = [];
+                let matches = inputText.match(configPattern);
+                let results = [];
                 
-                while ((match = configPattern.exec(inputText)) !== null) {
-                    let config = match[0].trim();
-                    if (config.length === 0) continue;
-                    
-                    // جایگزینی دقیق بخش path با متن جدید
-                    config = config.replace(/(?i)path=([^&]*)/g, "path=/telegram: @Eternal_Connect - telegram: @Eternal_Connect - telegram: @Eternal_Connect - telegram: @Eternal_Connect");
-                    
-                    // اضافه کردن نام کانفیگ اگر کاربر وارد کرده باشد
-                    if (customName) {
-                        if (config.includes("#")) {
-                            config = config.substring(0, config.indexOf("#")) + "#" + customName;
+                if (matches) {
+                    matches.forEach(config => {
+                        config = config.trim();
+                        if (config.length === 0) return;
+                        
+                        // جایگزینی دقیق بخش path با متن جدید
+                        config = config.replace(/path=([^&]*)/gi, "path=/telegram: @Eternal_Connect - telegram: @Eternal_Connect - telegram: @Eternal_Connect - telegram: @Eternal_Connect");
+                        
+                        // اضافه کردن نام کانفیگ اگر کاربر وارد کرده باشد
+                        if (customName) {
+                            if (config.includes("#")) {
+                                config = config.substring(0, config.indexOf("#")) + "#" + customName;
+                            } else {
+                                config += "#" + customName;
+                            }
                         } else {
-                            config += "#" + customName;
+                            // اگر نام کانفیگ وارد نشده، از تگ پیش‌فرض استفاده کن
+                            if (config.includes("#")) {
+                                config = config.substring(0, config.indexOf("#")) + "#" + decodeURIComponent(tag);
+                            } else {
+                                config += "#" + decodeURIComponent(tag);
+                            }
                         }
-                    }
-                    
-                    results.push(config);
+                        
+                        results.push(config);
+                    });
                 }
                 
                 // اگر هیچ کانفیگی پیدا نشد، پیام مناسب نمایش دهید  
@@ -256,18 +265,30 @@
             
             copyBtn.addEventListener('click', function() {
                 const result = resultText.textContent;
-                if (result && result !== "هیچ کانفیگی در متن یافت نشد.") {
-                    navigator.clipboard.writeText(result)
-                        .then(() => {
-                            copyBtn.textContent = "کپی شد!";
-                            setTimeout(() => {
-                                copyBtn.textContent = "کپی نتیجه";
-                            }, 2000);
-                        })
-                        .catch(err => {
-                            console.error('خطا در کپی کردن: ', err);
-                        });
+                
+                // ایجاد یک textarea موقت برای کپی کردن متن
+                const textarea = document.createElement('textarea');
+                textarea.value = result;
+                document.body.appendChild(textarea);
+                textarea.select();
+                
+                try {
+                    const successful = document.execCommand('copy');
+                    const msg = successful ? 'موفقیت‌آمیز' : 'ناموفق';
+                    console.log('کپی کردن متن ' + msg);
+                    
+                    // تغییر متن دکمه به صورت موقت
+                    if (successful) {
+                        copyBtn.textContent = "کپی شد!";
+                        setTimeout(() => {
+                            copyBtn.textContent = "کپی نتیجه";
+                        }, 2000);
+                    }
+                } catch (err) {
+                    console.error('خطا در کپی کردن: ', err);
                 }
+                
+                document.body.removeChild(textarea);
             });
         });
     </script>
