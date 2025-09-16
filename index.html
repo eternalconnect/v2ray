@@ -478,23 +478,22 @@
             const clearToggle = document.getElementById('clearToggle');
             const body = document.body;
             
-            // بررسی وضعیت حالت شب از localStorage
             if (localStorage.getItem('darkMode') === 'enabled') {
                 body.classList.add('dark-mode');
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
             }
             
-            // الگوی regex برای تشخیص پروتکل‌های مورد نظر
+
             const configPattern = /(vless|vmess|trojan|ss|hysteria2|wireguard|socks):\/\/[^\s<>]+/gi;
             
-            // تابع تشخیص زبان متن
+
             function detectTextDirection(text) {
-                // الگوهای کاراکترهای فارسی و عربی
+
                 const rtlPattern = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
                 return rtlPattern.test(text) ? 'rtl' : 'ltr';
             }
             
-            // اعمال جهت مناسب بر اساس محتوا
+
             function applyTextDirection() {
                 const inputs = document.querySelectorAll('input, textarea');
                 inputs.forEach(input => {
@@ -516,7 +515,7 @@
                 }
             }
             
-            // رویداد تغییر حالت روز/شب
+
             themeToggle.addEventListener('click', function() {
                 body.classList.toggle('dark-mode');
                 
@@ -529,7 +528,7 @@
                 }
             });
             
-            // رویداد پاک کردن محتوا
+
             clearToggle.addEventListener('click', function() {
                 configName.value = '';
                 inputText.value = '';
@@ -539,7 +538,7 @@
                 showNotification('همه فیلدها پاک شدند', true);
             });
             
-            // رویداد پردازش متن
+
             processBtn.addEventListener('click', function() {
                 const name = configName.value.trim();
                 const text = inputText.value;
@@ -561,14 +560,14 @@
                 matches.forEach(match => {
                     let cleanedConfig = match.trim();
                     
-                    // اگر کاربر نامی وارد کرده، به کانفیگ اضافه کنیم
+
                     if (name) {
-                        // پیدا کردن جای مناسب برای افزودن نام (معمولا در query string یا انتهای URL)
+
                         if (cleanedConfig.includes('#')) {
-                            // اگر از قبل fragment دارد، آن را با نام جدید جایگزین کنیم
+
                             cleanedConfig = cleanedConfig.split('#')[0] + '#' + encodeURIComponent(name);
                         } else {
-                            // اگر fragment ندارد، یک fragment با نام جدید اضافه کنیم
+
                             cleanedConfig += '#' + encodeURIComponent(name);
                         }
                     }
@@ -580,7 +579,7 @@
                 applyTextDirection();
             });
             
-            // رویداد کپی کردن
+
             copyBtn.addEventListener('click', function() {
                 const resultText = resultContainer.querySelector('pre')?.innerText;
                 
@@ -597,11 +596,11 @@
                 });
             });
             
-            // اعمال جهت متن هنگام تایپ
+
             inputText.addEventListener('input', applyTextDirection);
             configName.addEventListener('input', applyTextDirection);
             
-            // تابع نمایش اعلان
+
             function showNotification(message, isSuccess) {
                 notification.innerHTML = `
                     <i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
