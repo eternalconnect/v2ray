@@ -178,9 +178,10 @@
         textarea {
             min-height: 150px;
             resize: vertical;
-            white-space: pre;
-            overflow-wrap: normal;
-            overflow-x: auto;
+            /* بازگشت به حالت عادی بدون اسکرول افقی اجباری */
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         
         button {
@@ -409,19 +410,19 @@
                 <i class="fas fa-moon"></i>
             </button>
             <h1>مبدل V2ray</h1>
-            <p>نام و کانфиگ‌های خود را وارد کنید تا پردازش شوند</p>
+            <p>نام مورد نظر و لیست کانفیگ خود را وارد نمایید تا مورد پردازش قرار گیرد.</p>
             <div class="creator">ساخته شده توسط Eternal Connect</div>
         </div>
         
         <div class="content">
             <div class="input-group">
                 <label for="configName">نام کانفیگ <i class="fas fa-tag icon"></i></label>
-                <input type="text" id="configName" placeholder="یک نام برای کانفیگ خود وارد کنید" dir="auto">
+                <input type="text" id="configName" placeholder="یک نام برای کانفیگ خود وارد کنید." dir="auto">
             </div>
             
             <div class="input-group">
                 <label for="inputText">متن حاوی کانفیگ‌ها <i class="fas fa-code icon"></i></label>
-                <textarea id="inputText" placeholder="متن حاوی لینک‌های کانفیگ را اینجا وارد کنید..." dir="auto"></textarea>
+                <textarea id="inputText" placeholder="متن حاوی لینک‌های کانفیگ را اینجا وارد کنید." dir="auto"></textarea>
             </div>
             
             <button id="processBtn">
@@ -429,7 +430,7 @@
             </button>
             
             <div class="result-box" id="resultContainer">
-                <div class="result-placeholder">نتیجه اینجا نمایش داده خواهد شد</div>
+                <div class="result-placeholder">نتیجه اینجا نمایش داده خواهد شد.</div>
             </div>
             
             <button id="copyBtn" class="copy-btn">
@@ -511,7 +512,7 @@
                 const text = inputText.value;
                 
                 if (!text) {
-                    resultContainer.innerHTML = '<div class="result-placeholder">لطفا متن حاوی کانفیگ‌ها را وارد کنید</div>';
+                    resultContainer.innerHTML = '<div class="result-placeholder">لطفا متن حاوی کانفیگ‌ها را وارد کنید.</div>';
                     return;
                 }
                 
