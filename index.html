@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تبدیل کانفیگ شبکه</title>
+    <title>مبدل کانفیگ V2ray</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap');
         
         :root {
             --primary: #2563eb;
             --primary-dark: #1e40af;
+            --primary-light: #93c5fd;
             --secondary: #64748b;
             --light: #f8fafc;
             --dark: #1e293b;
             --gray: #e2e8f0;
             --success: #10b981;
+            --gradient-start: #3b82f6;
+            --gradient-end: #1d4ed8;
         }
         
         * {
@@ -25,73 +29,103 @@
         }
         
         body {
-            background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            color: var(--dark);
+            color: var(--light);
         }
         
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             width: 100%;
-            max-width: 600px;
+            max-width: 700px;
             overflow: hidden;
-            padding: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .header {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            padding: 30px;
             text-align: center;
-            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
         }
         
         .header h1 {
-            color: var(--primary);
-            font-size: 28px;
+            color: white;
+            font-size: 32px;
             margin-bottom: 10px;
             font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: relative;
         }
         
         .header p {
-            color: var(--secondary);
+            color: rgba(255, 255, 255, 0.9);
             font-size: 16px;
+            position: relative;
+        }
+        
+        .creator {
+            margin-top: 15px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            position: relative;
+        }
+        
+        .content {
+            padding: 30px;
         }
         
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
         .input-group label {
             display: block;
-            margin-bottom: 8px;
-            color: var(--dark);
+            margin-bottom: 10px;
+            color: var(--primary-light);
             font-weight: 500;
+            font-size: 16px;
         }
         
         input, textarea {
             width: 100%;
-            padding: 15px;
-            border: 2px solid var(--gray);
-            border-radius: 12px;
+            padding: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
             font-size: 16px;
             transition: all 0.3s;
-            background-color: var(--light);
+            background-color: rgba(15, 23, 42, 0.6);
+            color: white;
         }
         
         input:focus, textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3);
         }
         
         textarea {
-            min-height: 120px;
+            min-height: 150px;
             resize: vertical;
         }
         
@@ -99,20 +133,37 @@
             background: linear-gradient(to right, var(--primary), var(--primary-dark));
             color: white;
             border: none;
-            padding: 15px 25px;
-            border-radius: 12px;
+            padding: 17px 25px;
+            border-radius: 14px;
             font-size: 16px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
             width: 100%;
             margin-top: 10px;
-            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        button:hover::before {
+            left: 100%;
         }
         
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
         }
         
         button:active {
@@ -121,40 +172,45 @@
         
         .copy-btn {
             background: linear-gradient(to right, var(--success), #059669);
-            margin-top: 15px;
+            margin-top: 20px;
         }
         
         .result-box {
-            margin-top: 25px;
-            background-color: var(--light);
+            margin-top: 30px;
+            background-color: rgba(15, 23, 42, 0.6);
             padding: 20px;
-            border-radius: 12px;
-            border: 2px solid var(--gray);
-            min-height: 100px;
-            max-height: 300px;
+            border-radius: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            min-height: 120px;
+            max-height: 350px;
             overflow-y: auto;
             white-space: pre-wrap;
+            color: white;
         }
         
         .result-placeholder {
             color: var(--secondary);
             text-align: center;
-            padding: 20px;
+            padding: 30px;
+            opacity: 0.7;
         }
         
         .notification {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 30px;
+            right: 30px;
             background: var(--success);
             color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 18px 28px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             transform: translateY(-100px);
             opacity: 0;
-            transition: all 0.3s;
+            transition: all 0.4s;
             z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .notification.show {
@@ -162,17 +218,77 @@
             opacity: 1;
         }
         
+        .icon {
+            margin-left: 10px;
+        }
+        
         @media (max-width: 768px) {
             .container {
-                padding: 20px;
+                padding: 0;
+            }
+            
+            .header {
+                padding: 25px 20px;
             }
             
             .header h1 {
-                font-size: 24px;
+                font-size: 26px;
+            }
+            
+            .content {
+                padding: 25px 20px;
             }
             
             input, textarea, button {
-                padding: 12px;
+                padding: 14px;
+            }
+            
+            .notification {
+                right: 20px;
+                left: 20px;
+                top: 20px;
+            }
+        }
+        
+        /* اسکرول بار استایل */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        .pulse {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--success);
+            margin-left: 8px;
+            box-shadow: 0 0 0 rgba(16, 185, 129, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
             }
         }
     </style>
@@ -180,30 +296,40 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>تبدیل کانفیگ شبکه</h1>
+            <h1>مبدل کانفیگ V2ray</h1>
             <p>نام و کانفیگ‌های خود را وارد کنید تا پردازش شوند</p>
+            <div class="creator">ساخته شده توسط Eternal Connect</div>
         </div>
         
-        <div class="input-group">
-            <label for="configName">نام کانفیگ</label>
-            <input type="text" id="configName" placeholder="یک نام برای کانفیگ خود وارد کنید">
+        <div class="content">
+            <div class="input-group">
+                <label for="configName">نام کانفیگ <i class="fas fa-tag icon"></i></label>
+                <input type="text" id="configName" placeholder="یک نام برای کانفیگ خود وارد کنید">
+            </div>
+            
+            <div class="input-group">
+                <label for="inputText">متن حاوی کانفیگ‌ها <i class="fas fa-code icon"></i></label>
+                <textarea id="inputText" placeholder="متن حاوی لینک‌های کانفیگ را اینجا وارد کنید..."></textarea>
+            </div>
+            
+            <button id="processBtn">
+                <i class="fas fa-cogs"></i> اعمال تغییرات
+            </button>
+            
+            <div class="result-box" id="resultContainer">
+                <div class="result-placeholder">نتیجه اینجا نمایش داده خواهد شد</div>
+            </div>
+            
+            <button id="copyBtn" class="copy-btn">
+                <i class="far fa-copy"></i> کپی نتیجه
+            </button>
         </div>
-        
-        <div class="input-group">
-            <label for="inputText">متن حاوی کانفیگ‌ها</label>
-            <textarea id="inputText" placeholder="متن حاوی لینک‌های کانفیگ را اینجا وارد کنید..."></textarea>
-        </div>
-        
-        <button id="processBtn">اعمال تغییرات</button>
-        
-        <div class="result-box" id="resultContainer">
-            <div class="result-placeholder">نتیجه اینجا نمایش داده خواهد شد</div>
-        </div>
-        
-        <button id="copyBtn" class="copy-btn">کپی نتیجه</button>
     </div>
     
-    <div class="notification" id="notification">متن با موفقیت کپی شد!</div>
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span>متن با موفقیت کپی شد!</span>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -273,7 +399,11 @@
             });
             
             function showNotification(message, isSuccess) {
-                notification.textContent = message;
+                notification.innerHTML = `
+                    <i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${message}</span>
+                `;
+                
                 notification.style.background = isSuccess 
                     ? 'linear-gradient(to right, #10b981, #059669)' 
                     : 'linear-gradient(to right, #ef4444, #dc2626)';
